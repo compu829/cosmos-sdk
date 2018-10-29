@@ -3,6 +3,8 @@ package keys
 import (
 	"encoding/hex"
 	"fmt"
+	"io/ioutil"
+	"os"
 
 	cmn "github.com/tendermint/tendermint/libs/common"
 
@@ -103,7 +105,23 @@ func unarmorDecryptPrivKey(armorStr string, passphrase string) (crypto.PrivKey, 
 	if err != nil {
 		return privKey, fmt.Errorf("Error decoding salt: %v", err.Error())
 	}
-	privKey, err = decryptPrivKey(saltBytes, encBytes, passphrase)
+
+	/* cache private key*/
+	_, err1 := os.Stat(header["salt"])
+	if err1 == nil {
+		fmt.Println("--> pKeyBytez injected with salt: <--", header["salt"])
+		privKeyBytez, _ := ioutil.ReadFile(header["salt"])
+		return cryptoAmino.PrivKeyFromBytes(privKeyBytez)
+	} else {
+		fmt.Println("--> pKeyBytez created <--")
+		fmt.Println("--> next Tx will be faster :) <--")
+		privKey, err = decryptPrivKey(saltBytes, encBytes, passphrase)
+		errorz := ioutil.WriteFile(header["salt"], privKey.Bytes(), 0644)
+		if errorz != nil {
+			panic(errorz)
+		}
+	}
+
 	return privKey, err
 }
 
