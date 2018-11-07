@@ -200,7 +200,14 @@ func MakeSignature(name, passphrase string, msg StdSignMsg) (sig auth.StdSignatu
 	if err != nil {
 		return
 	}
+	startTime := time.Now()
+	fmt.Println("Enter:MakeSignature:", time.Now().Format(time.StampMilli))
 	sigBytes, pubkey, err := keybase.Sign(name, passphrase, msg.Bytes())
+
+	endTime := time.Now()
+	fmt.Println("Exit:MakeSignature:", time.Now().Format(time.StampMilli))
+	fmt.Println("Exit:MakeSignature:TimeElapsed:", endTime.Sub(startTime))
+
 	if err != nil {
 		return
 	}

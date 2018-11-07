@@ -3,6 +3,7 @@ package mintkey
 import (
 	"encoding/hex"
 	"fmt"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -117,6 +118,10 @@ func encryptPrivKey(privKey crypto.PrivKey, passphrase string) (saltBytes []byte
 // Unarmor and decrypt the private key.
 func UnarmorDecryptPrivKey(armorStr string, passphrase string) (crypto.PrivKey, error) {
 	var privKey crypto.PrivKey
+
+	startTime := time.Now()
+	fmt.Println("Enter:unarmorDecryptPrivKey:", time.Now().Format(time.StampMilli))
+
 	blockType, header, encBytes, err := armor.DecodeArmor(armorStr)
 	if err != nil {
 		return privKey, err
@@ -135,6 +140,11 @@ func UnarmorDecryptPrivKey(armorStr string, passphrase string) (crypto.PrivKey, 
 		return privKey, fmt.Errorf("Error decoding salt: %v", err.Error())
 	}
 	privKey, err = decryptPrivKey(saltBytes, encBytes, passphrase)
+
+	endTime := time.Now()
+	fmt.Println("Exit:unarmorDecryptPrivKey:", time.Now().Format(time.StampMilli))
+	fmt.Println("Exit:unarmorDecryptPrivKey:TimeElapsed:", endTime.Sub(startTime))
+
 	return privKey, err
 }
 
