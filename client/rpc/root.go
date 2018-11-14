@@ -1,6 +1,8 @@
 package rpc
 
 import (
+	"beyondprotocol/cosmos-sdk/codec"
+
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -48,11 +50,12 @@ func initClientCommand() *cobra.Command {
 }
 
 // Register REST endpoints
-func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router) {
+func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router, cdc *codec.Codec) {
 	r.HandleFunc("/node_info", NodeInfoRequestHandlerFn(cliCtx)).Methods("GET")
 	r.HandleFunc("/syncing", NodeSyncingRequestHandlerFn(cliCtx)).Methods("GET")
 	r.HandleFunc("/blocks/latest", LatestBlockRequestHandlerFn(cliCtx)).Methods("GET")
 	r.HandleFunc("/blocks/{height}", BlockRequestHandlerFn(cliCtx)).Methods("GET")
+	r.HandleFunc("/blockstx/{height}", BlockTxRequestHandlerFn(cliCtx, cdc)).Methods("GET")
 	r.HandleFunc("/validatorsets/latest", LatestValidatorSetRequestHandlerFn(cliCtx)).Methods("GET")
 	r.HandleFunc("/validatorsets/{height}", ValidatorSetRequestHandlerFn(cliCtx)).Methods("GET")
 }

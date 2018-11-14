@@ -1,6 +1,8 @@
 package rpc
 
 import (
+	"beyondprotocol/cosmos-sdk/codec"
+	"beyondprotocol/cosmos-sdk/x/auth"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -67,6 +69,54 @@ func getBlock(cliCtx context.CLIContext, height *int64) ([]byte, error) {
 		return cdc.MarshalJSONIndent(res, "", "  ")
 	}
 	return cdc.MarshalJSON(res)
+}
+
+func getBlockTx(cliCtx context.CLIContext, height *int64, cdc *codec.Codec) ([]byte, error) {
+	// get the node
+	node, err := cliCtx.GetNode()
+	if err != nil {
+		return nil, err
+	}
+
+	// header -> BlockchainInfo
+	// header, tx -> Block
+	// results -> BlockResults
+	res, err := node.Block(height)
+	if err != nil {
+		return nil, err
+	}
+
+	if !cliCtx.TrustNode {
+		check, err := cliCtx.Verify(res.Block.Height)
+		if err != nil {
+			return nil, err
+		}
+
+		err = tmliteProxy.ValidateBlockMeta(res.BlockMeta, check)
+		if err != nil {
+			return nil, err
+		}
+
+		err = tmliteProxy.ValidateBlock(res.Block, check)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	var tx auth.StdTx
+	var txArray []auth.StdTx
+	for i := range res.Block.Data.Txs {
+		err = cdc.UnmarshalBinary(res.Block.Data.Txs[i], &tx)
+		if err != nil {
+			panic(err)
+		}
+		txArray = append(txArray, tx)
+	}
+
+	if cliCtx.Indent {
+		return cdc.MarshalJSONIndent(txArray, "", "  ")
+	}
+	return cdc.MarshalJSON(txArray)
 }
 
 // get the current blockchain height
@@ -145,6 +195,32 @@ func LatestBlockRequestHandlerFn(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 		output, err := getBlock(cliCtx, &height)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
+		}
+		utils.PostProcessResponse(w, cdc, output, cliCtx.Indent)
+	}
+}
+
+// REST handler to get all block transactions
+func BlockTxRequestHandlerFn(cliCtx context.CLIContext, cdc *codec.Codec) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		height, err := strconv.ParseInt(vars["height"], 10, 64)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("ERROR: Couldn't parse block height. Assumed format is '/block/{height}'."))
+			return
+		}
+		chainHeight, err := GetChainHeight(cliCtx)
+		if height > chainHeight {
+			w.WriteHeader(http.StatusNotFound)
+			w.Write([]byte("ERROR: Requested block height is bigger then the chain length."))
+			return
+		}
+		output, err := getBlockTx(cliCtx, &height, cdc)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(err.Error()))
