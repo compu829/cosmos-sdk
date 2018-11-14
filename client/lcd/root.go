@@ -146,7 +146,7 @@ func createHandler(cdc *codec.Codec) *mux.Router {
 	r.HandleFunc("/node_version", NodeVersionRequestHandler(cliCtx)).Methods("GET")
 
 	keys.RegisterRoutes(r, cliCtx.Indent)
-	rpc.RegisterRoutes(cliCtx, r)
+	rpc.RegisterRoutes(cliCtx, r, cdc)
 	tx.RegisterRoutes(cliCtx, r, cdc)
 	auth.RegisterRoutes(cliCtx, r, cdc, "acc")
 	bank.RegisterRoutes(cliCtx, r, cdc, kb)
