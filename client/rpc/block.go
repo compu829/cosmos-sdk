@@ -1,11 +1,12 @@
 package rpc
 
 import (
-	"beyondprotocol/cosmos-sdk/codec"
-	"beyondprotocol/cosmos-sdk/x/auth"
 	"fmt"
 	"net/http"
 	"strconv"
+
+	"github.com/cosmos/cosmos-sdk/codec"
+	"github.com/cosmos/cosmos-sdk/x/auth"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/context"
