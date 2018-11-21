@@ -107,7 +107,7 @@ func getBlockTx(cliCtx context.CLIContext, height *int64, cdc *codec.Codec) ([]b
 	var tx auth.StdTx
 	var txArray []auth.StdTx
 	for i := range res.Block.Data.Txs {
-		err = cdc.UnmarshalBinary(res.Block.Data.Txs[i], &tx)
+		err = cdc.UnmarshalBinaryLengthPrefixed(res.Block.Data.Txs[i], &tx)
 		if err != nil {
 			panic(err)
 		}
