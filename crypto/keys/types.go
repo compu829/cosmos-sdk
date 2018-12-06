@@ -34,9 +34,10 @@ type Keybase interface {
 		encryptPasswd string, params hd.BIP44Params) (Info, error)
 	// Create, store, and return a new Ledger key reference
 	CreateLedger(name string, path ccrypto.DerivationPath, algo SigningAlgo) (info Info, err error)
-
 	// Create, store, and return a new offline key reference
 	CreateOffline(name string, pubkey crypto.PubKey) (info Info, err error)
+	// Create, store, and return a new DeepCover key reference
+	CreateDeepCover(name string, byte []romID) (info Info, err error)
 
 	// The following operations will *only* work on locally-stored keys
 	Update(name, oldpass string, getNewpass func() (string, error)) error
@@ -57,15 +58,17 @@ type KeyType uint
 
 // Info KeyTypes
 const (
-	TypeLocal   KeyType = 0
-	TypeLedger  KeyType = 1
-	TypeOffline KeyType = 2
+	TypeLocal     KeyType = 0
+	TypeLedger    KeyType = 1
+	TypeOffline   KeyType = 2
+	TypeDeepCover KeyType = 3
 )
 
 var keyTypes = map[KeyType]string{
-	TypeLocal:   "local",
-	TypeLedger:  "ledger",
-	TypeOffline: "offline",
+	TypeLocal:     "local",
+	TypeLedger:    "ledger",
+	TypeOffline:   "offline",
+	TypeDeepCover: "deepcover",
 }
 
 // String implements the stringer interface for KeyType.
@@ -88,6 +91,7 @@ type Info interface {
 var _ Info = &localInfo{}
 var _ Info = &ledgerInfo{}
 var _ Info = &offlineInfo{}
+var _ Info = &deepCoverInfo{}
 
 // localInfo is the public information about a locally stored key
 type localInfo struct {
@@ -189,4 +193,38 @@ func writeInfo(i Info) []byte {
 func readInfo(bz []byte) (info Info, err error) {
 	err = cdc.UnmarshalBinaryLengthPrefixed(bz, &info)
 	return
+}
+
+type deepCoverInfo struct {
+	Name   string        `json:"name"`
+	PubKey crypto.PubKey `json:"pubkey"`
+	RomID  []byte        `json:"romID"`
+}
+
+func newDeepCoverInfo(name string, pub crypto.PubKey, romID []byte) Info {
+	return &deepCoverInfo{
+		Name:   name,
+		PubKey: pub,
+		RomID:  romID,
+	}
+}
+
+func (i deepCoverInfo) GetType() KeyType {
+	return TypeOffline
+}
+
+func (i deepCoverInfo) GetRomID() []byte {
+	return i.RomID
+}
+
+func (i deepCoverInfo) GetName() string {
+	return i.Name
+}
+
+func (i deepCoverInfo) GetPubKey() crypto.PubKey {
+	return i.PubKey
+}
+
+func (i deepCoverInfo) GetAddress() types.AccAddress {
+	return i.PubKey.Address().Bytes()
 }
