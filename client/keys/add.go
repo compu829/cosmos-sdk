@@ -37,6 +37,7 @@ phrase, otherwise, a new key will be generated.`,
 	}
 	cmd.Flags().StringP(flagType, "t", "secp256k1", "Type of private key (secp256k1|ed25519)")
 	cmd.Flags().Bool(client.FlagUseLedger, false, "Store a local reference to a private key on a Ledger device")
+	cmd.Flags().Bool(client.FlagUseDeepCover, false, "Store a local reference to a private key on a Beyond DeepCover device")
 	cmd.Flags().Bool(flagRecover, false, "Provide seed phrase to recover existing key instead of creating")
 	cmd.Flags().Bool(flagNoBackup, false, "Don't print out seed phrase (if others are watching the terminal)")
 	cmd.Flags().Bool(flagDryRun, false, "Perform action, but don't add key to local keystore")
@@ -93,11 +94,22 @@ func runAddCmd(cmd *cobra.Command, args []string) error {
 		index := uint32(viper.GetInt(flagIndex))
 		path := ccrypto.DerivationPath{44, 118, account, 0, index}
 		algo := keys.SigningAlgo(viper.GetString(flagType))
+
 		info, err := kb.CreateLedger(name, path, algo)
 		if err != nil {
 			return err
 		}
 		printCreate(info, "")
+	} else if viper.GetBool(FlagUseDeepCover) {
+		account := uint32(viper.GetInt(flagAccount))
+		index := uint32(viper.GetInt(flagIndex))
+
+		info, err := kb.CreateDeepCover(name, index, algo)
+		if err != nil {
+			return err
+		}
+		printCreate(info, "")
+	}
 	} else if viper.GetBool(flagRecover) {
 		seed, err := client.GetSeed(
 			"Enter your recovery seed phrase:", buf)
@@ -160,7 +172,6 @@ func printCreate(info keys.Info, seed string) {
 
 /////////////////////////////
 // REST
-
 // new key request REST body
 type NewKeyBody struct {
 	Name     string `json:"name"`

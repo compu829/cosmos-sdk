@@ -17,6 +17,7 @@ const (
 	DefaultGasLimit      = 200000
 	GasFlagSimulate      = "simulate"
 
+	FlagUseDeepCover   = "deepcover"
 	FlagUseLedger      = "ledger"
 	FlagChainID        = "chain-id"
 	FlagNode           = "node"

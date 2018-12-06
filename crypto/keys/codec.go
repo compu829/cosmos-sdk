@@ -18,5 +18,5 @@ func init() {
 	cdc.RegisterConcrete(localInfo{}, "crypto/keys/localInfo", nil)
 	cdc.RegisterConcrete(ledgerInfo{}, "crypto/keys/ledgerInfo", nil)
 	cdc.RegisterConcrete(offlineInfo{}, "crypto/keys/offlineInfo", nil)
-	cdc.RegisterConcrete(offlineInfo{}, "crypto/keys/deepCoverInfo", nil)
+	cdc.RegisterConcrete(deepCoverInfo{}, "crypto/keys/deepCoverInfo", nil)
 }

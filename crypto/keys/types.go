@@ -37,7 +37,7 @@ type Keybase interface {
 	// Create, store, and return a new offline key reference
 	CreateOffline(name string, pubkey crypto.PubKey) (info Info, err error)
 	// Create, store, and return a new DeepCover key reference
-	CreateDeepCover(name string, byte []romID) (info Info, err error)
+	CreateDeepCover(name string, romID []byte) (info Info, err error)
 
 	// The following operations will *only* work on locally-stored keys
 	Update(name, oldpass string, getNewpass func() (string, error)) error
