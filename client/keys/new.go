@@ -86,6 +86,16 @@ func runNewCmd(cmd *cobra.Command, args []string) error {
 		return nil
 	}
 
+	if viper.GetBool(client.FlagUseDeepCover) {
+		info, err := kb.CreateDeepCover(name)
+		if err != nil {
+			return err
+		}
+
+		printCreate(info, "")
+		return nil
+	}
+
 	var mnemonic string
 
 	if !useDefaults {

@@ -16,4 +16,6 @@ func init() {
 func RegisterAmino(cdc *amino.Codec) {
 	cdc.RegisterConcrete(PrivKeyLedgerSecp256k1{},
 		"tendermint/PrivKeyLedgerSecp256k1", nil)
+	cdc.RegisterConcrete(PrivKeyDeepCoverSecp256r1{},
+		"tendermint/PrivKeyDeepCoverSecp256r1", nil)
 }

@@ -42,6 +42,7 @@ type CLIContext struct {
 	AccountStore  string
 	TrustNode     bool
 	UseLedger     bool
+	UseDeepCover  bool
 	Async         bool
 	JSON          bool
 	PrintResponse bool
@@ -80,6 +81,7 @@ func NewCLIContext() CLIContext {
 		Height:        viper.GetInt64(client.FlagHeight),
 		TrustNode:     viper.GetBool(client.FlagTrustNode),
 		UseLedger:     viper.GetBool(client.FlagUseLedger),
+		UseDeepCover:  viper.GetBool(client.FlagUseDeepCover)
 		Async:         viper.GetBool(client.FlagAsync),
 		JSON:          viper.GetBool(client.FlagJson),
 		PrintResponse: viper.GetBool(client.FlagPrintResponse),
@@ -223,6 +225,12 @@ func (ctx CLIContext) WithClient(client rpcclient.Client) CLIContext {
 // WithUseLedger returns a copy of the context with an updated UseLedger flag.
 func (ctx CLIContext) WithUseLedger(useLedger bool) CLIContext {
 	ctx.UseLedger = useLedger
+	return ctx
+}
+
+// WithUseDeepCover returns a copy of the context with an updated useDeepCover flag.
+func (ctx CLIContext) WithUseDeepCover(useDeepCover bool) CLIContext {
+	ctx.UseDeepCover = useDeepCover
 	return ctx
 }
 

@@ -177,8 +177,8 @@ func (kb dbKeybase) CreateOffline(name string, pub tmcrypto.PubKey) (Info, error
 }
 
 // CreateDeepCover creates a new locally-stored reference to a DeepCover keypair
-// It returns the created key info an error if the Ledger could not be queried
-func (kb dbKeybase) CreateDeepCover(name string, romID []byte) (Info, error) {
+// It returns the created key info an error if the DeepCover secure element could not be queried
+func (kb dbKeybase) CreateDeepCover(name string) (Info, error) {
 
 	priv, err := crypto.NewPrivKeyDeepCoverSecp256r1()
 
@@ -186,7 +186,7 @@ func (kb dbKeybase) CreateDeepCover(name string, romID []byte) (Info, error) {
 		return nil, err
 	}
 	pub := priv.PubKey()
-	return kb.writeDeepCoverKey(pub, name, romID), nil
+	return kb.writeDeepCoverKey(pub, name, []byte("romID")), nil
 }
 
 func (kb *dbKeybase) persistDerivedKey(seed []byte, passwd, name, fullHdPath string) (info Info, err error) {
@@ -268,6 +268,11 @@ func (kb dbKeybase) Sign(name, passphrase string, msg []byte) (sig []byte, pub t
 	case ledgerInfo:
 		linfo := info.(ledgerInfo)
 		priv, err = crypto.NewPrivKeyLedgerSecp256k1(linfo.Path)
+		if err != nil {
+			return
+		}
+	case deepCoverInfo:
+		priv, err = crypto.NewPrivKeyDeepCoverSecp256r1()
 		if err != nil {
 			return
 		}

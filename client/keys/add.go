@@ -18,12 +18,13 @@ import (
 )
 
 const (
-	flagType     = "type"
-	flagRecover  = "recover"
-	flagNoBackup = "no-backup"
-	flagDryRun   = "dry-run"
-	flagAccount  = "account"
-	flagIndex    = "index"
+	flagType      = "type"
+	flagRecover   = "recover"
+	flagNoBackup  = "no-backup"
+	flagDryRun    = "dry-run"
+	flagAccount   = "account"
+	flagIndex     = "index"
+	flagDeepCover = "deepcover"
 )
 
 func addKeyCommand() *cobra.Command {
@@ -100,16 +101,12 @@ func runAddCmd(cmd *cobra.Command, args []string) error {
 			return err
 		}
 		printCreate(info, "")
-	} else if viper.GetBool(FlagUseDeepCover) {
-		account := uint32(viper.GetInt(flagAccount))
-		index := uint32(viper.GetInt(flagIndex))
-
-		info, err := kb.CreateDeepCover(name, index, algo)
+	} else if viper.GetBool(client.FlagUseDeepCover) {
+		info, err := kb.CreateDeepCover(name)
 		if err != nil {
 			return err
 		}
 		printCreate(info, "")
-	}
 	} else if viper.GetBool(flagRecover) {
 		seed, err := client.GetSeed(
 			"Enter your recovery seed phrase:", buf)
@@ -141,7 +138,9 @@ func printCreate(info keys.Info, seed string) {
 		printKeyInfo(info, Bech32KeyOutput)
 
 		// print seed unless requested not to.
-		if !viper.GetBool(client.FlagUseLedger) && !viper.GetBool(flagNoBackup) {
+		if !viper.GetBool(client.FlagUseLedger) &&
+			!viper.GetBool(flagNoBackup) &&
+			!viper.GetBool(flagDeepCover) {
 			fmt.Println("**Important** write this seed phrase in a safe place.")
 			fmt.Println("It is the only way to recover your account if you ever forget your password.")
 			fmt.Println()

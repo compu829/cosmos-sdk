@@ -57,6 +57,7 @@ func GetCommands(cmds ...*cobra.Command) []*cobra.Command {
 		c.Flags().Int64(FlagHeight, 0, "block height to query, omit to get most recent provable block")
 		viper.BindPFlag(FlagTrustNode, c.Flags().Lookup(FlagTrustNode))
 		viper.BindPFlag(FlagUseLedger, c.Flags().Lookup(FlagUseLedger))
+		viper.BindPFlag(FlagUseDeepCover, c.Flags().Lookup(FlagUseDeepCover))
 		viper.BindPFlag(FlagChainID, c.Flags().Lookup(FlagChainID))
 		viper.BindPFlag(FlagNode, c.Flags().Lookup(FlagNode))
 	}
@@ -75,6 +76,7 @@ func PostCommands(cmds ...*cobra.Command) []*cobra.Command {
 		c.Flags().String(FlagChainID, "", "Chain ID of tendermint node")
 		c.Flags().String(FlagNode, "tcp://localhost:26657", "<host>:<port> to tendermint rpc interface for this chain")
 		c.Flags().Bool(FlagUseLedger, false, "Use a connected Ledger device")
+		c.Flags().Bool(FlagUseDeepCover, false, "Use a connected DeepCover device")
 		c.Flags().Float64(FlagGasAdjustment, DefaultGasAdjustment, "adjustment factor to be multiplied against the estimate returned by the tx simulation; if the gas limit is set manually this flag is ignored ")
 		c.Flags().Bool(FlagAsync, false, "broadcast transactions asynchronously")
 		c.Flags().Bool(FlagJson, false, "return output in json format")
