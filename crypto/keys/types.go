@@ -210,7 +210,7 @@ func newDeepCoverInfo(name string, pub crypto.PubKey, romID []byte) Info {
 }
 
 func (i deepCoverInfo) GetType() KeyType {
-	return TypeOffline
+	return TypeDeepCover
 }
 
 func (i deepCoverInfo) GetRomID() []byte {

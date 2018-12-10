@@ -114,7 +114,7 @@ func (pkeydeep PrivKeyDeepCoverSecp256r1) Sign(msg []byte) ([]byte, error) {
 func (pkeydeep PrivKeyDeepCoverSecp256r1) getPubKey() (key tmcrypto.PubKey, err error) {
 	key, err = pkeydeep.pubkeyDeepCoverSecp256r1()
 	if err != nil {
-		return key, fmt.Errorf("please open Cosmos app on the Ledger device - error: %v", err)
+		return key, fmt.Errorf("Internal error during retrieval of DeepCover public key. Details: %v", err)
 	}
 	return key, err
 }

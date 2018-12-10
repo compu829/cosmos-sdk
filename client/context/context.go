@@ -81,7 +81,7 @@ func NewCLIContext() CLIContext {
 		Height:        viper.GetInt64(client.FlagHeight),
 		TrustNode:     viper.GetBool(client.FlagTrustNode),
 		UseLedger:     viper.GetBool(client.FlagUseLedger),
-		UseDeepCover:  viper.GetBool(client.FlagUseDeepCover)
+		UseDeepCover:  viper.GetBool(client.FlagUseDeepCover),
 		Async:         viper.GetBool(client.FlagAsync),
 		JSON:          viper.GetBool(client.FlagJson),
 		PrintResponse: viper.GetBool(client.FlagPrintResponse),
