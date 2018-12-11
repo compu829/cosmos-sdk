@@ -1,9 +1,9 @@
 package crypto
 
-//TODO: include deepcover.go from beyondcli
-// import (
-// 	beyondLedger "github.com/beyondprotocol/beyondprotocol-sdk/beyond-ledger"
-// )
+ import (
+ 	deepc "github.com/beyondprotocol/beyondprotocol-sdk/deepcover-client"
+	"fmt"
+ )
 
 type DeepCoverLedger struct {
 	RomID []byte
@@ -27,6 +27,8 @@ func (dc *DeepCoverLedger) SignSECP256R1(txBytes []byte) ([]byte, error) {
 }
 
 func (dc *DeepCoverLedger) GetPublicKeySECP256R1() ([]byte, error) {
+        dcID := deepc.GetDcID()
+	fmt.Println(dcID)
 	return []byte("ED44653F01F42FE33BEE8FF29E9A2BBDE0543CFBA8E716EC338DC527DEC1AEC5"), nil
 }
 
