@@ -24,7 +24,6 @@ type (
 	DeepCoverSECP256R1 interface {
 		GetPublicKeySECP256R1() ([]byte, error)
 		SignSECP256R1([]byte) ([]byte, error)
-		GetRomID() []byte
 	}
 
 	// We cache the PubKey from the first call to use it later.

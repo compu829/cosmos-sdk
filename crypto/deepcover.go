@@ -1,15 +1,19 @@
 package crypto
 
- import (
- 	deepc "github.com/beyondprotocol/beyondprotocol-sdk/deepcover-client"
+import (
 	"fmt"
- )
+    	"encoding/hex"
 
+	deepc "github.com/beyondprotocol/beyondprotocol-sdk/deepcover-client"
+)
+
+// DeepCoverLedger structure
 type DeepCoverLedger struct {
 	RomID []byte
 	Index uint
 }
 
+// NewDeepCoverLedger creates new DeepCover ledger object
 func NewDeepCoverLedger(romID []byte) *DeepCoverLedger {
 	return &DeepCoverLedger{
 		RomID: romID,
@@ -17,23 +21,35 @@ func NewDeepCoverLedger(romID []byte) *DeepCoverLedger {
 	}
 }
 
+// FindDeepCover returns DeepCover found on the RPi
 func FindDeepCover() (*DeepCoverLedger, error) {
-	newDeepCoverLedger := DeepCoverLedger{RomID: []byte("mock")}
+	newDeepCoverLedger := DeepCoverLedger{RomID: deepc.GetDcID()}
 	return &newDeepCoverLedger, nil
 }
 
+// SignSECP256R1 returns the signature of the input data
 func (dc *DeepCoverLedger) SignSECP256R1(txBytes []byte) ([]byte, error) {
-	return []byte("mock"), nil
+	return deepc.SignData(deepc.CalcucateMessageDigest(txBytes, dc.RomID)), nil
 }
 
+// GetPublicKeySECP256R1 returns the DeepCover public key
 func (dc *DeepCoverLedger) GetPublicKeySECP256R1() ([]byte, error) {
-        dcID := deepc.GetDcID()
-	fmt.Println(dcID)
-	return []byte("ED44653F01F42FE33BEE8FF29E9A2BBDE0543CFBA8E716EC338DC527DEC1AEC5"), nil
+	var publicKey []byte
+        const pubkeyMagicPrefix = 0x4
+        publicKey = append(publicKey, pubkeyMagicPrefix)
+        publicKey = append(publicKey, deepc.GetPubKeyA()...)
+
+        fmt.Println("Retrieved public key from DeepCover:\n")
+        fmt.Println(hex.EncodeToString(publicKey))
+
+        return publicKey, nil
 }
 
+// GetRomID returns the DeepCover ID (romID)
 func (dc *DeepCoverLedger) GetRomID() []byte {
-	return []byte("mock")
+	dcID := deepc.GetDcID()
+	fmt.Println("DeepCover ID: ", deepc.Bytes2HexString(dcID))
+	return dcID
 }
 
 func init() {
