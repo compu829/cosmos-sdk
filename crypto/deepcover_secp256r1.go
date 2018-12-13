@@ -6,7 +6,7 @@ import (
 	secp "github.com/btcsuite/btcd/btcec"
 
 	tmcrypto "github.com/tendermint/tendermint/crypto"
-	tmsecp256k1 "github.com/tendermint/tendermint/crypto/secp256k1"
+	dcsecp256r1 "github.com/tendermint/tendermint/crypto/secp256r1"
 )
 
 var (
@@ -128,14 +128,14 @@ func (pkeydeep PrivKeyDeepCoverSecp256r1) pubkeyDeepCoverSecp256r1() (pub tmcryp
 		return nil, fmt.Errorf("error fetching public key: %v", err)
 	}
 
-	var pk tmsecp256k1.PubKeySecp256k1
+	var pk dcsecp256r1.PubKeySecp256r1
 
 	// re-serialize in the 33-byte compressed format
 	cmp, err := secp.ParsePubKey(key[:], secp.S256())
 	if err != nil {
 		return nil, fmt.Errorf("error parsing public key: %v", err)
 	}
-	copy(pk[:], cmp.SerializeCompressed())
+	copy(pk[:], key)
 
 	return pk, nil
 }

@@ -26,6 +26,14 @@
   revision = "3a771d992973f24aa725d07868b467d1ddfceafb"
 
 [[projects]]
+  branch = "develop"
+  digest = "1:bc21415a9a95b2ba6a745a5c5b1e883e3e06c004698889095624fda254b442fc"
+  name = "github.com/beyondprotocol/beyondprotocol-sdk"
+  packages = ["deepcover-client"]
+  pruneopts = "UT"
+  revision = "85e19d0bc949934e98faed4e0d4eda4e0aaaf355"
+
+[[projects]]
   digest = "1:1343a2963481a305ca4d051e84bc2abd16b601ee22ed324f8d605de1adb291b0"
   name = "github.com/bgentry/speakeasy"
   packages = ["."]
@@ -49,6 +57,93 @@
   revision = "d4cc87b860166d00d6b5b9e0d3b3d71d6088d4d4"
 
 [[projects]]
+  digest = "1:8a4173dfd767dc7c4b23fb23b30c043fd3c3cbba977ddbfaba54cd05349e0674"
+  name = "github.com/cosmos/cosmos-sdk"
+  packages = [
+    "baseapp",
+    "client",
+    "client/context",
+    "client/keys",
+    "client/lcd",
+    "client/lcd/statik",
+    "client/rpc",
+    "client/tx",
+    "client/utils",
+    "cmd/cosmos-sdk-cli/cmd",
+    "cmd/gaia/app",
+    "cmd/gaia/init",
+    "codec",
+    "crypto",
+    "crypto/keys",
+    "crypto/keys/hd",
+    "crypto/keys/keyerror",
+    "crypto/keys/mintkey",
+    "examples/basecoin/app",
+    "examples/basecoin/types",
+    "examples/democoin/app",
+    "examples/democoin/mock",
+    "examples/democoin/types",
+    "examples/democoin/x/cool",
+    "examples/democoin/x/cool/client/cli",
+    "examples/democoin/x/pow",
+    "examples/democoin/x/pow/client/cli",
+    "examples/democoin/x/simplestake",
+    "examples/democoin/x/simplestake/client/cli",
+    "examples/democoin/x/sketchy",
+    "server",
+    "server/config",
+    "server/mock",
+    "store",
+    "tests",
+    "types",
+    "version",
+    "x/auth",
+    "x/auth/client/cli",
+    "x/auth/client/rest",
+    "x/auth/client/txbuilder",
+    "x/auth/simulation",
+    "x/bank",
+    "x/bank/client",
+    "x/bank/client/cli",
+    "x/bank/client/rest",
+    "x/bank/simulation",
+    "x/distribution",
+    "x/distribution/client/cli",
+    "x/distribution/keeper",
+    "x/distribution/simulation",
+    "x/distribution/tags",
+    "x/distribution/types",
+    "x/gov",
+    "x/gov/client",
+    "x/gov/client/cli",
+    "x/gov/client/rest",
+    "x/gov/simulation",
+    "x/gov/tags",
+    "x/ibc",
+    "x/ibc/client/cli",
+    "x/mint",
+    "x/mock",
+    "x/mock/simulation",
+    "x/params",
+    "x/params/subspace",
+    "x/slashing",
+    "x/slashing/client/cli",
+    "x/slashing/client/rest",
+    "x/slashing/simulation",
+    "x/stake",
+    "x/stake/client/cli",
+    "x/stake/client/rest",
+    "x/stake/keeper",
+    "x/stake/querier",
+    "x/stake/simulation",
+    "x/stake/tags",
+    "x/stake/types",
+  ]
+  pruneopts = "UT"
+  revision = "a4af659b3359be3268e38e041fe68996db062621"
+  version = "v0.26.0"
+
+[[projects]]
   digest = "1:e8a3550c8786316675ff54ad6f09d265d129c9d986919af7f541afba50d87ce2"
   name = "github.com/cosmos/go-bip39"
   packages = ["."]
@@ -62,6 +157,13 @@
   pruneopts = "UT"
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
   version = "v1.1.0"
+
+[[projects]]
+  digest = "1:c7644c73a3d23741fdba8a99b1464e021a224b7e205be497271a8003a15ca41b"
+  name = "github.com/ebuchman/fail-test"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "95f809107225be108efcf10a3509e4ea6ceef3c4"
 
 [[projects]]
   digest = "1:abeb38ade3f32a92943e5be54f55ed6d6e3b6602761d74b4aab4c9dd45c18abd"
@@ -434,7 +536,8 @@
   version = "v0.11.1"
 
 [[projects]]
-  digest = "1:395820b381043b9d2204e181ddf0f9147397c4a7b8f5dc3162de4cfcddf4589a"
+  branch = "Deepcover"
+  digest = "1:92cde83892f5a7ec0ff176d814c55203abefa63bfd4c327839fcbf66bce96836"
   name = "github.com/tendermint/tendermint"
   packages = [
     "abci/client",
@@ -455,6 +558,7 @@
     "crypto/multisig",
     "crypto/multisig/bitarray",
     "crypto/secp256k1",
+    "crypto/secp256r1",
     "crypto/tmhash",
     "crypto/xsalsa20symmetric",
     "evidence",
@@ -467,7 +571,6 @@
     "libs/db",
     "libs/errors",
     "libs/events",
-    "libs/fail",
     "libs/flowrate",
     "libs/log",
     "libs/pubsub",
@@ -500,8 +603,8 @@
     "version",
   ]
   pruneopts = "UT"
-  revision = "03e42d2e3866f01a00625f608e3bbfaeb30690de"
-  version = "v0.26.1-rc0"
+  revision = "094433423819a97a91a3cd63f7409daf111424ad"
+  source = "https://github.com/beyondprotocol/tendermint"
 
 [[projects]]
   digest = "1:7886f86064faff6f8d08a3eb0e8c773648ff5a2e27730831e2bfbf07467f6666"
@@ -640,8 +743,87 @@
   analyzer-version = 1
   input-imports = [
     "github.com/bartekn/go-bip39",
+    "github.com/beyondprotocol/beyondprotocol-sdk/deepcover-client",
     "github.com/bgentry/speakeasy",
     "github.com/btcsuite/btcd/btcec",
+    "github.com/cosmos/cosmos-sdk/baseapp",
+    "github.com/cosmos/cosmos-sdk/client",
+    "github.com/cosmos/cosmos-sdk/client/context",
+    "github.com/cosmos/cosmos-sdk/client/keys",
+    "github.com/cosmos/cosmos-sdk/client/lcd",
+    "github.com/cosmos/cosmos-sdk/client/lcd/statik",
+    "github.com/cosmos/cosmos-sdk/client/rpc",
+    "github.com/cosmos/cosmos-sdk/client/tx",
+    "github.com/cosmos/cosmos-sdk/client/utils",
+    "github.com/cosmos/cosmos-sdk/cmd/cosmos-sdk-cli/cmd",
+    "github.com/cosmos/cosmos-sdk/cmd/gaia/app",
+    "github.com/cosmos/cosmos-sdk/cmd/gaia/init",
+    "github.com/cosmos/cosmos-sdk/codec",
+    "github.com/cosmos/cosmos-sdk/crypto",
+    "github.com/cosmos/cosmos-sdk/crypto/keys",
+    "github.com/cosmos/cosmos-sdk/crypto/keys/hd",
+    "github.com/cosmos/cosmos-sdk/crypto/keys/keyerror",
+    "github.com/cosmos/cosmos-sdk/crypto/keys/mintkey",
+    "github.com/cosmos/cosmos-sdk/examples/basecoin/app",
+    "github.com/cosmos/cosmos-sdk/examples/basecoin/types",
+    "github.com/cosmos/cosmos-sdk/examples/democoin/app",
+    "github.com/cosmos/cosmos-sdk/examples/democoin/mock",
+    "github.com/cosmos/cosmos-sdk/examples/democoin/types",
+    "github.com/cosmos/cosmos-sdk/examples/democoin/x/cool",
+    "github.com/cosmos/cosmos-sdk/examples/democoin/x/cool/client/cli",
+    "github.com/cosmos/cosmos-sdk/examples/democoin/x/pow",
+    "github.com/cosmos/cosmos-sdk/examples/democoin/x/pow/client/cli",
+    "github.com/cosmos/cosmos-sdk/examples/democoin/x/simplestake",
+    "github.com/cosmos/cosmos-sdk/examples/democoin/x/simplestake/client/cli",
+    "github.com/cosmos/cosmos-sdk/examples/democoin/x/sketchy",
+    "github.com/cosmos/cosmos-sdk/server",
+    "github.com/cosmos/cosmos-sdk/server/config",
+    "github.com/cosmos/cosmos-sdk/server/mock",
+    "github.com/cosmos/cosmos-sdk/store",
+    "github.com/cosmos/cosmos-sdk/tests",
+    "github.com/cosmos/cosmos-sdk/types",
+    "github.com/cosmos/cosmos-sdk/version",
+    "github.com/cosmos/cosmos-sdk/x/auth",
+    "github.com/cosmos/cosmos-sdk/x/auth/client/cli",
+    "github.com/cosmos/cosmos-sdk/x/auth/client/rest",
+    "github.com/cosmos/cosmos-sdk/x/auth/client/txbuilder",
+    "github.com/cosmos/cosmos-sdk/x/auth/simulation",
+    "github.com/cosmos/cosmos-sdk/x/bank",
+    "github.com/cosmos/cosmos-sdk/x/bank/client",
+    "github.com/cosmos/cosmos-sdk/x/bank/client/cli",
+    "github.com/cosmos/cosmos-sdk/x/bank/client/rest",
+    "github.com/cosmos/cosmos-sdk/x/bank/simulation",
+    "github.com/cosmos/cosmos-sdk/x/distribution",
+    "github.com/cosmos/cosmos-sdk/x/distribution/client/cli",
+    "github.com/cosmos/cosmos-sdk/x/distribution/keeper",
+    "github.com/cosmos/cosmos-sdk/x/distribution/simulation",
+    "github.com/cosmos/cosmos-sdk/x/distribution/tags",
+    "github.com/cosmos/cosmos-sdk/x/distribution/types",
+    "github.com/cosmos/cosmos-sdk/x/gov",
+    "github.com/cosmos/cosmos-sdk/x/gov/client",
+    "github.com/cosmos/cosmos-sdk/x/gov/client/cli",
+    "github.com/cosmos/cosmos-sdk/x/gov/client/rest",
+    "github.com/cosmos/cosmos-sdk/x/gov/simulation",
+    "github.com/cosmos/cosmos-sdk/x/gov/tags",
+    "github.com/cosmos/cosmos-sdk/x/ibc",
+    "github.com/cosmos/cosmos-sdk/x/ibc/client/cli",
+    "github.com/cosmos/cosmos-sdk/x/mint",
+    "github.com/cosmos/cosmos-sdk/x/mock",
+    "github.com/cosmos/cosmos-sdk/x/mock/simulation",
+    "github.com/cosmos/cosmos-sdk/x/params",
+    "github.com/cosmos/cosmos-sdk/x/params/subspace",
+    "github.com/cosmos/cosmos-sdk/x/slashing",
+    "github.com/cosmos/cosmos-sdk/x/slashing/client/cli",
+    "github.com/cosmos/cosmos-sdk/x/slashing/client/rest",
+    "github.com/cosmos/cosmos-sdk/x/slashing/simulation",
+    "github.com/cosmos/cosmos-sdk/x/stake",
+    "github.com/cosmos/cosmos-sdk/x/stake/client/cli",
+    "github.com/cosmos/cosmos-sdk/x/stake/client/rest",
+    "github.com/cosmos/cosmos-sdk/x/stake/keeper",
+    "github.com/cosmos/cosmos-sdk/x/stake/querier",
+    "github.com/cosmos/cosmos-sdk/x/stake/simulation",
+    "github.com/cosmos/cosmos-sdk/x/stake/tags",
+    "github.com/cosmos/cosmos-sdk/x/stake/types",
     "github.com/cosmos/go-bip39",
     "github.com/golang/protobuf/proto",
     "github.com/gorilla/mux",
