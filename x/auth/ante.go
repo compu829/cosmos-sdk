@@ -191,7 +191,7 @@ func processSig(ctx sdk.Context,
 	}
 
 	consumeSignatureVerificationGas(ctx.GasMeter(), pubKey)
-	bytes = calculateMessageDigest(signBytes, sig.Signature)
+	bytes := calculateMessageDigest(bytes, sig)
 	if !simulate && !pubKey.VerifyBytes(signBytes, sig.Signature) {
 		return nil, sdk.ErrUnauthorized("signature verification failed").Result()
 	}
