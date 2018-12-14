@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"fmt"
 
+	deepc "github.com/beyondprotocol/beyondprotocol-sdk/deepcover-client"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/tendermint/tendermint/crypto"
 	"github.com/tendermint/tendermint/crypto/ed25519"
@@ -190,6 +191,7 @@ func processSig(ctx sdk.Context,
 	}
 
 	consumeSignatureVerificationGas(ctx.GasMeter(), pubKey)
+	bytes = calculateMessageDigest(signBytes, sig.Signature)
 	if !simulate && !pubKey.VerifyBytes(signBytes, sig.Signature) {
 		return nil, sdk.ErrUnauthorized("signature verification failed").Result()
 	}
@@ -312,4 +314,11 @@ func getSignBytesList(chainID string, stdTx StdTx, stdSigs []StdSignature) (sign
 			stdTx.Fee, stdTx.Msgs, stdTx.Memo)
 	}
 	return
+}
+
+func calculateMessageDigest(msgBytes []byte, sig StdSignature) []byte {
+	if sig.RomId == nil {
+		return msgBytes
+	}
+	return deepc.CalcucateMessageDigest(msgBytes, sig.RomId)
 }
