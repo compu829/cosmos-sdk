@@ -22,6 +22,7 @@ type (
 	DeepCoverSECP256R1 interface {
 		GetPublicKeySECP256R1() ([]byte, error)
 		SignSECP256R1([]byte) ([]byte, error)
+		GetRomID() []byte
 	}
 
 	// We cache the PubKey from the first call to use it later.
@@ -35,24 +36,32 @@ type (
 
 // NewPrivKeyDeepCoverSecp256r1 will generate a new key and store the public key
 // for later use.
-func NewPrivKeyDeepCoverSecp256r1() (tmcrypto.PrivKey, error) {
+func NewPrivKeyDeepCoverSecp256r1(withRomId bool) (tmcrypto.PrivKey, []byte, error) {
 	deepCover, err := discoverDeepCover()
 
 	pkeydeep := &PrivKeyDeepCoverSecp256r1{deepcover: deepCover}
 
 	pubKey, err := pkeydeep.getPubKey()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	pkeydeep.CachedPubKey = pubKey
-	return pkeydeep, err
+	var romId []byte = nil
+	if withRomId {
+		romId = pkeydeep.RomId()
+	}
+	return pkeydeep, romId, err
 }
 
 // Implement Tendermint PrivKey interface
 // PubKey returns the cached public key.
 func (pkeydeep PrivKeyDeepCoverSecp256r1) PubKey() tmcrypto.PubKey {
 	return pkeydeep.CachedPubKey
+}
+
+func (pkeydeep PrivKeyDeepCoverSecp256r1) RomId() []byte {
+	return pkeydeep.deepcover.GetRomID()
 }
 
 // ValidateKey allows us to verify the sanity of a public key after loading it

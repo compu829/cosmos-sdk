@@ -1,8 +1,8 @@
 package crypto
 
 import (
+	"encoding/hex"
 	"fmt"
-    	"encoding/hex"
 
 	deepc "github.com/beyondprotocol/beyondprotocol-sdk/deepcover-client"
 )
@@ -29,21 +29,20 @@ func FindDeepCover() (*DeepCoverLedger, error) {
 
 // SignSECP256R1 returns the signature of the input data
 func (dc *DeepCoverLedger) SignSECP256R1(txBytes []byte) ([]byte, error) {
-        digest := deepc.CalcucateMessageDigest(txBytes, dc.RomID)
-	return deepc.SignData(digest)
+	return deepc.SignData(txBytes)
 }
 
 // GetPublicKeySECP256R1 returns the DeepCover public key
 func (dc *DeepCoverLedger) GetPublicKeySECP256R1() ([]byte, error) {
 	var publicKey []byte
-        const pubkeyMagicPrefix = 0x4
-        publicKey = append(publicKey, pubkeyMagicPrefix)
-        publicKey = append(publicKey, deepc.GetPubKeyA()...)
+	//const pubkeyMagicPrefix = 0x4
+	//publicKey = append(publicKey, pubkeyMagicPrefix)
+	publicKey = append(publicKey, deepc.GetPubKeyA()...)
 
-        fmt.Println("Retrieved public key from DeepCover:\n")
-        fmt.Println(hex.EncodeToString(publicKey))
+	fmt.Println("Retrieved public key from DeepCover:\n")
+	fmt.Println(hex.EncodeToString(publicKey))
 
-        return publicKey, nil
+	return publicKey, nil
 }
 
 // GetRomID returns the DeepCover ID (romID)

@@ -2,6 +2,7 @@ package auth
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
 
@@ -323,7 +324,11 @@ func calculateMessageDigest(msgBytes []byte, sig StdSignature) []byte {
 		return msgBytes
 	}
 	fmt.Println("sig.RomId:", hex.EncodeToString(sig.RomId))
-	digest := deepc.CalcucateMessageDigest(msgBytes, sig.RomId)
+	h := sha256.New()
+	h.Write(msgBytes)
+	sha256cs := h.Sum(nil)
+	fmt.Println("msgBytesSHA:", hex.EncodeToString(sha256cs))
+	digest := deepc.CalcucateMessageDigest(sha256cs, sig.RomId)
 	fmt.Println("digest:", digest)
 	return digest
 }

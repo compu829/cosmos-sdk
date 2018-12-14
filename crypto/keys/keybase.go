@@ -180,13 +180,13 @@ func (kb dbKeybase) CreateOffline(name string, pub tmcrypto.PubKey) (Info, error
 // It returns the created key info an error if the DeepCover secure element could not be queried
 func (kb dbKeybase) CreateDeepCover(name string) (Info, error) {
 
-	priv, err := crypto.NewPrivKeyDeepCoverSecp256r1()
+	priv, romId, err := crypto.NewPrivKeyDeepCoverSecp256r1(true)
 
 	if err != nil {
 		return nil, err
 	}
 	pub := priv.PubKey()
-	return kb.writeDeepCoverKey(pub, name, []byte("romID")), nil
+	return kb.writeDeepCoverKey(pub, name, romId), nil
 }
 
 func (kb *dbKeybase) persistDerivedKey(seed []byte, passwd, name, fullHdPath string) (info Info, err error) {
@@ -272,12 +272,13 @@ func (kb dbKeybase) Sign(name, passphrase string, msg []byte) (sig []byte, pub t
 			return
 		}
 	case deepCoverInfo:
-		priv, err = crypto.NewPrivKeyDeepCoverSecp256r1()
+		priv, _, err = crypto.NewPrivKeyDeepCoverSecp256r1(false)
 		if err != nil {
 			return
 		}
 		dcinfo := info.(deepCoverInfo)
 		hsm.RomID = dcinfo.GetRomID()
+		fmt.Println(" hsm.RomID: ", hsm.RomID)
 	case offlineInfo:
 		linfo := info.(offlineInfo)
 		_, err := fmt.Fprintf(os.Stderr, "Bytes to sign:\n%s", msg)
