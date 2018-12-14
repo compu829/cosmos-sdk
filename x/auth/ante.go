@@ -191,8 +191,8 @@ func processSig(ctx sdk.Context,
 	}
 
 	consumeSignatureVerificationGas(ctx.GasMeter(), pubKey)
-	bytes := calculateMessageDigest(bytes, sig)
-	if !simulate && !pubKey.VerifyBytes(signBytes, sig.Signature) {
+	bytes := calculateMessageDigest(signBytes, sig)
+	if !simulate && !pubKey.VerifyBytes(bytes, sig.Signature) {
 		return nil, sdk.ErrUnauthorized("signature verification failed").Result()
 	}
 
@@ -317,8 +317,13 @@ func getSignBytesList(chainID string, stdTx StdTx, stdSigs []StdSignature) (sign
 }
 
 func calculateMessageDigest(msgBytes []byte, sig StdSignature) []byte {
+	fmt.Println("msgBytes:", hex.EncodeToString(msgBytes))
 	if sig.RomId == nil {
+		fmt.Println("sig.RomId is nil!")
 		return msgBytes
 	}
-	return deepc.CalcucateMessageDigest(msgBytes, sig.RomId)
+	fmt.Println("sig.RomId:", hex.EncodeToString(sig.RomId))
+	digest := deepc.CalcucateMessageDigest(msgBytes, sig.RomId)
+	fmt.Println("digest:", digest)
+	return digest
 }
