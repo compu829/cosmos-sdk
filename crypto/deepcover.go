@@ -29,7 +29,8 @@ func FindDeepCover() (*DeepCoverLedger, error) {
 
 // SignSECP256R1 returns the signature of the input data
 func (dc *DeepCoverLedger) SignSECP256R1(txBytes []byte) ([]byte, error) {
-	return deepc.SignData(deepc.CalcucateMessageDigest(txBytes, dc.RomID)), nil
+        digest := deepc.CalcucateMessageDigest(txBytes, dc.RomID)
+	return deepc.SignData(digest)
 }
 
 // GetPublicKeySECP256R1 returns the DeepCover public key
