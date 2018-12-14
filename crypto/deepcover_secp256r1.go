@@ -8,13 +8,13 @@ import (
 )
 
 var (
-	// discoverLedger defines a function to be invoked at runtime for discovering
-	// a connected Ledger device.
+	// discoverDeepCover defines a function to be invoked at runtime for discovering
+	// a connected DeepCover device.
 	discoverDeepCover discoverDeepCoverFn
 )
 
 type (
-	// discoverLedgerFn defines a DeepCover discovery function that returns a
+	// discoverDeepCoverFn defines a DeepCover discovery function that returns a
 	// connected device or an error upon failure.
 	discoverDeepCoverFn func() (DeepCoverSECP256R1, error)
 	// DeepCoverSECP256R1 reflects an interface a DeepCover API must implement for
@@ -76,7 +76,7 @@ func (pkeydeep PrivKeyDeepCoverSecp256r1) ValidateKey() error {
 func (pkeydeep *PrivKeyDeepCoverSecp256r1) AssertIsPrivKeyInner() {}
 
 // Bytes implements the PrivKey interface. It stores the cached public key so
-// we can verify the same key when we reconnect to a ledger.
+// we can verify the same key when we reconnect to a device.
 func (pkeydeep PrivKeyDeepCoverSecp256r1) Bytes() []byte {
 	return cdc.MustMarshalBinaryBare(pkeydeep)
 }
@@ -91,9 +91,9 @@ func (pkeydeep PrivKeyDeepCoverSecp256r1) Equals(other tmcrypto.PrivKey) bool {
 	return false
 }
 
-// Sign calls the ledger and stores the PubKey for future use.
+// Sign calls the DeepCover and stores the PubKey for future use.
 //
-// Communication is checked on NewPrivKeyLedger and PrivKeyFromBytes, returning
+// Communication is checked on NewPrivKeyDeepCover and PrivKeyFromBytes, returning
 // an error, so this should only trigger if the private key is held in memory
 // for a while before use.
 func (pkeydeep PrivKeyDeepCoverSecp256r1) Sign(msg []byte) ([]byte, error) {
@@ -105,7 +105,7 @@ func (pkeydeep PrivKeyDeepCoverSecp256r1) Sign(msg []byte) ([]byte, error) {
 	return sig, nil
 }
 
-// getPubKey reads the pubkey the ledger itself
+// getPubKey reads the pubkey from the device itself
 // since this involves IO, it may return an error, which is not exposed
 // in the PubKey interface, so this function allows better error handling
 func (pkeydeep PrivKeyDeepCoverSecp256r1) getPubKey() (key tmcrypto.PubKey, err error) {
