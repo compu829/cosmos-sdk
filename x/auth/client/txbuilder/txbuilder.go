@@ -205,7 +205,7 @@ func MakeSignature(name, passphrase string, msg StdSignMsg) (sig auth.StdSignatu
 	}
 	startTime := time.Now()
 	fmt.Println("Enter:MakeSignature:", time.Now().Format(time.StampMilli))
-	sigBytes, pubkey, err := keybase.Sign(name, passphrase, msg.Bytes())
+	sigBytes, pubkey, hsm, err := keybase.Sign(name, passphrase, msg.Bytes())
 
 	endTime := time.Now()
 	fmt.Println("Exit:MakeSignature:", time.Now().Format(time.StampMilli))
@@ -219,5 +219,6 @@ func MakeSignature(name, passphrase string, msg StdSignMsg) (sig auth.StdSignatu
 		Sequence:      msg.Sequence,
 		PubKey:        pubkey,
 		Signature:     sigBytes,
+		RomId:         hsm.RomID,
 	}, nil
 }

@@ -1,6 +1,7 @@
 package auth
 
 import (
+	//k "beyondprotocol/cosmos-sdk/crypto/keys"
 	"encoding/json"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -138,6 +139,9 @@ type StdSignature struct {
 	Signature     []byte           `json:"signature"`
 	AccountNumber int64            `json:"account_number"`
 	Sequence      int64            `json:"sequence"`
+	RomId         []byte           `json:"romId"` // optional
+	// TODO: check why HsmInfo could not be referenced; circular dependency? compiler output is misleading;
+	//HsmInfo       k.HsmInfo        `json:"hsmInfo"` // optional
 }
 
 // logic for standard transaction decoding

@@ -17,7 +17,7 @@ type Keybase interface {
 	Delete(name, passphrase string) error
 
 	// Sign some bytes, looking up the private key to use
-	Sign(name, passphrase string, msg []byte) ([]byte, crypto.PubKey, error)
+	Sign(name, passphrase string, msg []byte) ([]byte, crypto.PubKey, HsmInfo, error)
 
 	// CreateMnemonic creates a new mnemonic, and derives a hierarchical deterministic
 	// key from that.
@@ -227,4 +227,9 @@ func (i deepCoverInfo) GetPubKey() crypto.PubKey {
 
 func (i deepCoverInfo) GetAddress() types.AccAddress {
 	return i.PubKey.Address().Bytes()
+}
+
+type HsmInfo struct {
+	RomID    []byte `json:"romID"`
+	PageData []byte `json:"pageData"`
 }

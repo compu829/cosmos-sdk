@@ -248,7 +248,7 @@ func (kb dbKeybase) GetByAddress(address types.AccAddress) (Info, error) {
 
 // Sign signs the msg with the named key.
 // It returns an error if the key doesn't exist or the decryption fails.
-func (kb dbKeybase) Sign(name, passphrase string, msg []byte) (sig []byte, pub tmcrypto.PubKey, err error) {
+func (kb dbKeybase) Sign(name, passphrase string, msg []byte) (sig []byte, pub tmcrypto.PubKey, hsm HsmInfo, err error) {
 	info, err := kb.Get(name)
 	if err != nil {
 		return
@@ -263,7 +263,7 @@ func (kb dbKeybase) Sign(name, passphrase string, msg []byte) (sig []byte, pub t
 		}
 		priv, err = mintkey.UnarmorDecryptPrivKey(linfo.PrivKeyArmor, passphrase)
 		if err != nil {
-			return nil, nil, err
+			return nil, nil, hsm, err
 		}
 	case ledgerInfo:
 		linfo := info.(ledgerInfo)
@@ -276,31 +276,33 @@ func (kb dbKeybase) Sign(name, passphrase string, msg []byte) (sig []byte, pub t
 		if err != nil {
 			return
 		}
+		dcinfo := info.(deepCoverInfo)
+		hsm.RomID = dcinfo.GetRomID()
 	case offlineInfo:
 		linfo := info.(offlineInfo)
 		_, err := fmt.Fprintf(os.Stderr, "Bytes to sign:\n%s", msg)
 		if err != nil {
-			return nil, nil, err
+			return nil, nil, hsm, err
 		}
 		buf := bufio.NewReader(os.Stdin)
 		_, err = fmt.Fprintf(os.Stderr, "\nEnter Amino-encoded signature:\n")
 		if err != nil {
-			return nil, nil, err
+			return nil, nil, hsm, err
 		}
 		// Will block until user inputs the signature
 		signed, err := buf.ReadString('\n')
 		if err != nil {
-			return nil, nil, err
+			return nil, nil, hsm, err
 		}
 		cdc.MustUnmarshalBinaryLengthPrefixed([]byte(signed), sig)
-		return sig, linfo.GetPubKey(), nil
+		return sig, linfo.GetPubKey(), hsm, nil
 	}
 	sig, err = priv.Sign(msg)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, hsm, err
 	}
 	pub = priv.PubKey()
-	return sig, pub, nil
+	return sig, pub, hsm, nil
 }
 
 func (kb dbKeybase) ExportPrivateKeyObject(name string, passphrase string) (tmcrypto.PrivKey, error) {
