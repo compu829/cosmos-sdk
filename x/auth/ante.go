@@ -4,16 +4,19 @@ import (
 	"bytes"
 	"encoding/hex"
 	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/tendermint/tendermint/crypto"
 	"github.com/tendermint/tendermint/crypto/ed25519"
 	"github.com/tendermint/tendermint/crypto/secp256k1"
+	secp256r1 "github.com/tendermint/tendermint/crypto/secp256r1"
 )
 
 const (
 	memoCostPerByte     sdk.Gas = 1
 	ed25519VerifyCost           = 59
 	secp256k1VerifyCost         = 100
+	secp256r1VerifyCost         = 101
 	maxMemoCharacters           = 100
 	// how much gas = 1 atom
 	gasPerUnitCost = 1000
@@ -241,6 +244,8 @@ func consumeSignatureVerificationGas(meter sdk.GasMeter, pubkey crypto.PubKey) {
 		meter.ConsumeGas(ed25519VerifyCost, "ante verify: ed25519")
 	case secp256k1.PubKeySecp256k1:
 		meter.ConsumeGas(secp256k1VerifyCost, "ante verify: secp256k1")
+	case secp256r1.PubKeySecp256r1:
+		meter.ConsumeGas(secp256r1VerifyCost, "ante verify: secp256r1")
 	default:
 		panic("Unrecognized signature type")
 	}
