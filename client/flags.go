@@ -89,6 +89,7 @@ func PostCommands(cmds ...*cobra.Command) []*cobra.Command {
 			"gas limit to set per-transaction; set to %q to calculate required gas automatically (default %d)", GasFlagSimulate, DefaultGasLimit))
 		viper.BindPFlag(FlagTrustNode, c.Flags().Lookup(FlagTrustNode))
 		viper.BindPFlag(FlagUseLedger, c.Flags().Lookup(FlagUseLedger))
+		viper.BindPFlag(FlagUseDeepCover, c.Flags().Lookup(FlagUseDeepCover))
 		viper.BindPFlag(FlagChainID, c.Flags().Lookup(FlagChainID))
 		viper.BindPFlag(FlagNode, c.Flags().Lookup(FlagNode))
 	}
