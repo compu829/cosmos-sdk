@@ -4,7 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	deepc "github.com/beyondprotocol/beyondprotocol-sdk/deepcover-client"
+	deepc "github.com/beyondprotocol/demo-sdk/deepcover-client"
 )
 
 // DeepCoverLedger structure
