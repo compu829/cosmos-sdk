@@ -6,7 +6,7 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	deepc "github.com/beyondprotocol/beyondprotocol-sdk/deepcover-client"
+	deepc "github.com/beyondprotocol/demo-sdk/deepcover-client"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/tendermint/tendermint/crypto"
 	"github.com/tendermint/tendermint/crypto/ed25519"
